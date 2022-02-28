@@ -27,7 +27,7 @@
             tools:src="@tools:sample/avatars" />
 
         <TextView
-            android:id="@+id/tv_name"
+            android:id="@+id/tv_am_name"
             style="@style/TextComponentWrapped"
             tools:text="@tools:sample/full_names"
             app:layout_constraintEnd_toEndOf="parent"
@@ -39,7 +39,7 @@
             style="@style/TableRowBaseComponent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_name">
+            app:layout_constraintTop_toBottomOf="@id/tv_am_name">
             <TableRow
                 style="@style/TableRowBaseComponent"
                 android:gravity="center">
@@ -88,7 +88,7 @@
                     style="@style/TextComponentWrapped.normal_small"
                     />
                 <TextView
-                    android:id="@+id/tv_username"
+                    android:id="@+id/tv_am_username"
                     tools:text="@tools:sample/full_names"
                     style="@style/TextComponentWrapped.normal"
                     />
