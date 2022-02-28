@@ -1,6 +1,13 @@
 <resources>
     <!-- Other string resources-->
-
+    <string name="app_name">submission1_githubuser</string>
+    <string name="data">Data</string>
+    <string name="detail_information">Detail Information</string>
+    <string name="username">Username</string>
+    <string name="location">Location</string>
+    <string name="company">Company</string>
+    <string name="repository">Repository</string>
+    <string name="greeting">Hi There, Glad to see you !</string>
     <string-array name="username">
         <item>JakeWharton</item>
         <item>amitshekhariitbhu</item>
