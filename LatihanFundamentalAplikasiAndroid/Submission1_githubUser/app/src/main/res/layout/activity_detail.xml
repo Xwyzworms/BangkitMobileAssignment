@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <androidx.constraintlayout.widget.ConstraintLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".DetailActivity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_greetings"
+            style="@style/TextComponentWrapped"
+            android:text="@string/greeting"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_profile"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginVertical="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_greetings"
+            tools:src="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/tv_am_name"
+            style="@style/TextComponentWrapped"
+            tools:text="@tools:sample/full_names"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_profile" />
+
+        <TableLayout
+            android:id="@+id/tl_simple"
+            style="@style/TableRowBaseComponent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_am_name">
+            <TableRow
+                style="@style/TableRowBaseComponent"
+                android:gravity="center">
+                <TextView
+                    android:id="@+id/tv_totalFollowers"
+                    tools:text="308 Followers"
+                    style="@style/TextComponentWrapped.subtitle"
+                    app:drawableEndCompat="@drawable/ic_baseline_multiple_person_24" />
+                <TextView
+                    android:id="@+id/tv_totalFollowing"
+                    tools:text="280 Following"
+                    style="@style/TextComponentWrapped.subtitle"
+                    app:drawableEndCompat="@drawable/ic_baseline_person_24"
+                    />
+            </TableRow>
+
+        </TableLayout>
+        <TableLayout
+            style="@style/TableBaseComponent"
+            android:layout_marginTop="10dp"
+            app:layout_constraintTop_toBottomOf="@id/tl_simple"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+            <TableRow
+                style="@style/TableRowBaseComponent.gray">
+
+                <TextView
+                    android:text="@string/data"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    style="@style/TextComponentWrapped.subtitle.small"
+                    />
+                <TextView
+                    android:text="@string/detail_information"
+                    style="@style/TextComponentWrapped.subtitle.normal"
+                    android:textColor="@color/white"
+                    />
+            </TableRow>
+
+
+            <TableRow
+                style="@style/TableRowBaseComponent.bright"
+                >
+                <TextView
+                    android:text="@string/username"
+                    style="@style/TextComponentWrapped.normal_small"
+                    />
+                <TextView
+                    android:id="@+id/tv_am_username"
+                    tools:text="@tools:sample/full_names"
+                    style="@style/TextComponentWrapped.normal"
+                    />
+            </TableRow>
+
+            <TableRow
+                style="@style/TableRowBaseComponent.gray"
+                >
+                <TextView
+                    android:textColor="@color/white"
+                    android:text="@string/location"
+                    style="@style/TextComponentWrapped.normal_small"
+                    />
+                <TextView
+                    android:id="@+id/tv_location"
+                    android:textColor="@color/white"
+                    tools:text="@tools:sample/full_names"
+                    style="@style/TextComponentWrapped.normal"
+                    />
+            </TableRow>
+
+            <TableRow style="@style/TableRowBaseComponent.gray">
+                <TextView
+                    android:text="@string/company"
+                    android:textColor="@color/white"
+                    style="@style/TextComponentWrapped.normal_small"
+                    />
+                <TextView
+                    android:id="@+id/tv_company"
+                    android:textColor="@color/white"
+                    tools:text="@tools:sample/lorem"
+                    style="@style/TextComponentWrapped.normal"
+                    />
+            </TableRow>
+
+            <TableRow
+                style="@style/TableRowBaseComponent.bright"
+                >
+                <TextView
+                    android:text="@string/repository"
+                    style="@style/TextComponentWrapped.normal_small"
+                    />
+                <TextView
+                    android:id="@+id/tv_repository"
+                    tools:text="@tools:sample/first_names"
+                    style="@style/TextComponentWrapped.normal"
+                    />
+            </TableRow>
+
+        </TableLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
