@@ -11,10 +11,15 @@ import android.view.View
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.content.ContextCompat
 import com.example.submission1_githubuser.R
+import com.example.submission1_githubuser.data.User
+import java.util.logging.Filter
 
 class SearchableEditText : AppCompatEditText, View.OnTouchListener {
 
     internal lateinit var mClearButton : Drawable
+
+
+
 
     constructor(context : Context) : super(context) {
         init()
@@ -42,6 +47,7 @@ class SearchableEditText : AppCompatEditText, View.OnTouchListener {
     }
 
 
+
     private fun init () {
         mClearButton = ContextCompat.getDrawable(context, R.drawable.ic_baseline_close_24) as Drawable
         setOnTouchListener(this)
@@ -54,12 +60,11 @@ class SearchableEditText : AppCompatEditText, View.OnTouchListener {
                     if(s.toString().isNotEmpty()) showClearButton() else hideClearButton()
             }
 
-            override fun afterTextChanged(p0: Editable?) {
-
+            override fun afterTextChanged(s: Editable?) {
             }
-
         })
     }
+
 
     override fun onTouch(v: View?, event: MotionEvent): Boolean {
 

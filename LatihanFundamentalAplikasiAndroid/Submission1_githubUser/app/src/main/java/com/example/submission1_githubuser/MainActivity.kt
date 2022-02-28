@@ -1,7 +1,10 @@
 package com.example.submission1_githubuser
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.submission1_githubuser.adapters.UserAdapter
 import com.example.submission1_githubuser.data.User
@@ -9,6 +12,7 @@ import com.example.submission1_githubuser.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var listUserAdapter : UserAdapter
     private lateinit var binding : ActivityMainBinding
 
     private val listUsers : ArrayList<User>
@@ -34,9 +38,33 @@ class MainActivity : AppCompatActivity() {
 
     private fun showUserData() {
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
-        val listUsers : ArrayList<User> = listUsers
-        val listUserAdapter = UserAdapter(listUsers)
+        listUserAdapter = UserAdapter(listUsers)
         binding.recyclerView.adapter = listUserAdapter
+        listUserAdapter.setOnItemClickCallback(object : UserAdapter.OnItemClickCallback {
+            override fun onItemSelected(data: User) {
+                showUserDetails(data)
+            }
+
+        })
+
+    }
+
+    private fun showUserDetails(user : User) {
+        val intent = Intent(this@MainActivity,DetailActivity::class.java )
+        intent.putExtra(DetailActivity.EXTRA_USER,user)
+        startActivity(intent)
+
+    }
+
+
+    private fun filter(text : String, adapter : UserAdapter,arrayList : ArrayList<User> ) {
+        val filteredList = ArrayList<User>()
+        for (user in arrayList) {
+            if (user.username.lowercase().contains(text.lowercase())) {
+                filteredList.add(user)
+            }
+        }
+        adapter.filterList(filteredList)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,5 +74,23 @@ class MainActivity : AppCompatActivity() {
 
         binding.recyclerView.setHasFixedSize(true)
         showUserData()
+
+        binding.searchableEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+                    filter(p0.toString(),listUserAdapter,listUsers )
+            }
+
+        })
+
+
+
     }
 }
