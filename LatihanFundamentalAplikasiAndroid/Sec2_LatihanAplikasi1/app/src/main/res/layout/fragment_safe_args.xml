@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".SafeArgsFragment">
+
+    <TextView
+        android:id="@+id/name_category"
+        tools:text="Halo Gais"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/stock_category"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="7 Biji"/>
+
+    <Button
+        android:id="@+id/btn_profile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/to_home" />
+
+
+</LinearLayout>
