@@ -13,7 +13,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var tvResult : TextView
 
-    private val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+    private val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()
+    ){
         if (it.resultCode == MoveForResultActivity.RESULT_CODE) {
             val selectedValue : Int = it.data?.getIntExtra(MoveForResultActivity.EXTRA_SELECTED_VALUE,0) ?: 0
             tvResult.text= selectedValue.toString()
