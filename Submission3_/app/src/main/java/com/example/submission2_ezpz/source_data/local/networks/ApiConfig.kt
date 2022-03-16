@@ -1,4 +1,4 @@
-package com.example.submission2_ezpz.networks
+package com.example.submission2_ezpz.source_data.local.networks
 
 import androidx.viewbinding.BuildConfig
 import okhttp3.OkHttpClient

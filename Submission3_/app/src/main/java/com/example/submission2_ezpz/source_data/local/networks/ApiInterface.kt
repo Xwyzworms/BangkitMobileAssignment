@@ -1,4 +1,4 @@
-package com.example.submission2_ezpz.networks
+package com.example.submission2_ezpz.source_data.local.networks
 
 import com.example.submission2_ezpz.BuildConfig
 import com.example.submission2_ezpz.data.*

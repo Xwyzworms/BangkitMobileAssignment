@@ -4,10 +4,8 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.submission2_ezpz.data.User
 import com.example.submission2_ezpz.data.UserOwner
-import com.example.submission2_ezpz.databinding.FragmentUserProfileBinding
-import com.example.submission2_ezpz.networks.ApiConfig
+import com.example.submission2_ezpz.source_data.local.networks.ApiConfig
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
