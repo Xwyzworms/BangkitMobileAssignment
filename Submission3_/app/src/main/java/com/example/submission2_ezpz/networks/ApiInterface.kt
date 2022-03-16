@@ -1,5 +1,6 @@
 package com.example.submission2_ezpz.networks
 
+import com.example.submission2_ezpz.BuildConfig
 import com.example.submission2_ezpz.data.*
 import retrofit2.Call
 import retrofit2.http.GET
@@ -10,7 +11,7 @@ import retrofit2.http.Query
 interface ApiInterface {
 
  companion object{
-  const val TOKEN = "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"
+  const val TOKEN = BuildConfig.API_KEY
  }
 
  @GET("/users")
