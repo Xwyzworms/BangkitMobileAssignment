@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/detailUserFragment"
+        android:name="com.example.submission2_ezpz.ui.UserProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_user_profile">
+        <action
+            android:id="@+id/action_detailUserFragment_to_detailUserFragment2"
+            app:destination="@id/detailUserFragment2" />
+        <action
+            android:id="@+id/action_detailUserFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.submission2_ezpz.ui.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_detailUserFragment2"
+            app:destination="@id/detailUserFragment2" />
+        <argument
+            android:name="user"
+            app:argType="com.example.submission2_ezpz.data.User" />
+    </fragment>
+    <fragment
+        android:id="@+id/followersFragment"
+        android:name="com.example.submission2_ezpz.ui.FollowersFragment"
+        android:label="fragment_followers"
+        tools:layout="@layout/fragment_followers" />
+    <fragment
+        android:id="@+id/followingFragment"
+        android:name="com.example.submission2_ezpz.ui.FollowingFragment"
+        android:label="fragment_following"
+        tools:layout="@layout/fragment_following" />
+    <fragment
+        android:id="@+id/exploreFragment"
+        android:name="com.example.submission2_ezpz.ui.ExploreFragment"
+        android:label="Explore"
+        tools:layout="@layout/fragment_explore" >
+        <action
+            android:id="@+id/action_exploreFragment_to_detailUserFragment2"
+            app:destination="@id/detailUserFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailUserFragment2"
+        android:name="com.example.submission2_ezpz.DetailUserFragment"
+        android:label="Detail User"
+        tools:layout="@layout/fragment_detail_user" >
+        <action
+            android:id="@+id/action_detailUserFragment2_self"
+            app:destination="@id/detailUserFragment2" />
+        <action
+            android:id="@+id/action_detailUserFragment2_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+</navigation>
