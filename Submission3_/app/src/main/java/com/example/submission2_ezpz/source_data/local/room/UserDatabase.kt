@@ -12,7 +12,7 @@ import com.example.submission2_ezpz.source_data.local.entity.UserEntity
 abstract class UserDatabase () : RoomDatabase() {
 
     abstract fun userDao() : UserDao
-    
+
     companion object {
         @Volatile
         private var INSTANCE : UserDatabase? =null
