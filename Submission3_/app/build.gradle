@@ -78,6 +78,8 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:$navigation_ver"
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation_ver"
 
+    // preferences
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'
