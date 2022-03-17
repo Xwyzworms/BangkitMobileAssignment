@@ -16,4 +16,7 @@ class UserEntity(
 
     @field:ColumnInfo(name="url")
     val githubUrl : String,
+
+    @field:ColumnInfo(name="favorite")
+    val isFavorite : Boolean
 )
