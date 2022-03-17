@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface UserDao {
 
-
     @Query("SELECT * FROM users WHERE favorite = 1")
     fun getFavorites() : Flow<List<User>>
 
@@ -17,16 +16,16 @@ interface UserDao {
     fun getUser() : Flow<List<User>>
 
     @Insert
-    fun insertFavorites(user : User)
+    suspend fun insertFavorites(user : User)
 
     @Query("DELETE FROM users WHERE username=:username AND :favorite=1")
-    fun deleteFavorites(username : String, favorite : Boolean)
+    suspend fun deleteFavorites(username : String, favorite : Boolean)
 
     @Query("DELETE FROM users WHERE favorite=1")
-    fun deleteAllFavorites()
+    suspend fun deleteAllFavorites()
 
     @Query("SELECT EXISTS(SELECT * FROM users WHERE username=:username AND favorite= 1)")
-    fun isUserFavorites(username:String, favorite: Boolean) : Boolean
+    suspend fun isUserFavorites(username:String, favorite: Boolean) : Boolean
 
 
 }
