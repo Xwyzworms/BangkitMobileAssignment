@@ -14,7 +14,7 @@ object Injection {
         val apiService : ApiInterface = ApiConfig.ApiService()
         val database  = UserDatabase.getDatabaseInstance(context)
         val dao = database.userDao()
-        return UserRepository.getInstance(context, ProvideUserSettings(dataStore))
+        return UserRepository.getInstance(apiService, dao ,ProvideUserSettings(dataStore))
     }
 
     fun ProvideUserSettings(datastore : DataStore<Preferences>) : SettingPreferences{

@@ -10,7 +10,7 @@ class UserRepository private constructor (
     private val userPreferences: SettingPreferences) {
 
 
-    
+
 
 
     companion object {
