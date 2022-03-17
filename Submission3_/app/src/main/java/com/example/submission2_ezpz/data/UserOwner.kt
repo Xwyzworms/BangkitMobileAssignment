@@ -17,8 +17,6 @@ data class UserOwner(
 	val followingUrl: String? = null,
 
 
-
-
 	@field:SerializedName("bio")
 	val bio: String? = null,
 
