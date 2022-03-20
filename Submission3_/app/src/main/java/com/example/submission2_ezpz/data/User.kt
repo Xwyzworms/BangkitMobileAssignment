@@ -16,5 +16,5 @@ data class User(
 	@field:SerializedName("url")
 	var githubUrl: String,
 
-	var isFavorite : Boolean
+	var isFavorite : Boolean? = false
 ) : Parcelable

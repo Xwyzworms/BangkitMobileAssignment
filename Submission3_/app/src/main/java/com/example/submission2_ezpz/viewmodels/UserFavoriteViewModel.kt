@@ -1,13 +1,14 @@
 package com.example.submission2_ezpz.viewmodels
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
+import androidx.lifecycle.*
+import com.example.submission2_ezpz.data.User
 import com.example.submission2_ezpz.source_data.local.entity.UserEntity
 import com.example.submission2_ezpz.source_data.local.setting_preference.SettingPreferences
 import com.example.submission2_ezpz.source_data.repository.UserRepository
 import com.example.submission2_ezpz.source_data.Result
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import androidx.lifecycle.viewModelScope
 
 class UserFavoriteViewModel(private val userRepository : UserRepository,
                             private val themePreference : SettingPreferences ): ViewModel() {
@@ -21,8 +22,11 @@ class UserFavoriteViewModel(private val userRepository : UserRepository,
     val loading : LiveData<Boolean> get() = loading_
 
     fun insertFavorite(user : UserEntity) {
+
+        viewModelScope.launch {
         userRepository.setFavorites(user, true)
         status_message_.value = "User Inserted ..."
+        }
     }
 
     fun getFavorites() : LiveData<Result<List<UserEntity>>> {
@@ -30,15 +34,17 @@ class UserFavoriteViewModel(private val userRepository : UserRepository,
     }
 
     fun removeFavorite(user : UserEntity) {
-        userRepository.setFavorites(user, false)
-        status_message_.value = "User Removed ..."
+        viewModelScope.launch {
+            userRepository.setFavorites(user, false)
+            status_message_.value = "User Removed ..."
+        }
     }
 
     fun loadTheme() : LiveData<Boolean>{
         val theme = themePreference.getThemeSettings().asLiveData()
         return theme
     }
-    
+
 
 
 }
