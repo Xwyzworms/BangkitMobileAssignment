@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    tools:context=".DetailUserFragment">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/iv_du_user_pict"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <ImageView
+        android:id="@+id/iv_starred"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:src="@drawable/ic_baseline_star_border_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_du_name"
+        style="@style/TextWrapped.Header"
+        android:layout_marginStart="15dp"
+        tools:text="@tools:sample/full_names"
+        app:layout_constraintStart_toEndOf="@id/iv_du_user_pict"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+    <TextView
+        android:id="@+id/tv_du_username"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="15dp"
+        style="@style/TextWrapped.normal"
+        tools:text="@tools:sample/lorem"
+        app:layout_constraintTop_toBottomOf="@id/tv_du_name"
+        app:layout_constraintStart_toEndOf="@id/iv_du_user_pict"
+        />
+    <TextView
+        android:id="@+id/tv_du_bioTitle"
+        android:text="@string/bio_title"
+        android:layout_marginTop="15dp"
+        style="@style/TextWidthParent.Header"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_du_user_pict"
+         />
+    <TextView
+        android:id="@+id/tv_du_bioContent"
+        android:maxLines="4"
+        android:padding="10dp"
+        android:gravity="center_horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_du_bioTitle"
+        style="@style/TextWrapped.normal"
+        tools:text="@tools:sample/lorem/random"
+        />
+
+    <TextView
+        android:id="@+id/tv_du_company"
+        style="@style/TextDrawable"
+        android:layout_marginTop="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_du_bioContent"
+        tools:text="@tools:sample/lorem"
+        app:drawableStartCompat="@drawable/ic_baseline_corporate_fare_24" />
+    <TextView
+
+        android:id="@+id/tv_du_location"
+        style="@style/TextDrawable"
+        app:drawableStartCompat="@drawable/ic_baseline_location_on_24"
+        android:layout_marginTop="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_du_company"
+        tools:text="@tools:sample/lorem"
+        />
+    <TextView
+        android:id="@+id/tv_du_foll"
+        style="@style/TextDrawable"
+        app:drawableStartCompat="@drawable/ic_baseline_supervisor_account_24"
+        android:layout_marginTop="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_du_location"
+        tools:text="@tools:sample/lorem"
+        />
+
+    <TextView
+        android:id="@+id/tv_du_repositories"
+        style="@style/TextDrawable"
+        app:drawableStartCompat="@drawable/ic_baseline_collections_bookmark_24"
+        android:layout_marginTop="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_du_foll"
+        tools:text="@tools:sample/lorem"
+        />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabs_du"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_du_repositories"
+        app:tabIndicatorColor="?attr/colorSecondary"
+        app:tabSelectedTextColor="?attr/colorSecondary" />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_pager_du"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tabs_du" />
+
+    <ProgressBar
+        android:id="@+id/pb_du"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">Submission2_Ezpz</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="credit">Credit</string>
+    <string name="github">Github</string>
+    <string name="followers">Followers</string>
+    <string name="following">Following</string>
+    <string name="home">Home</string>
+    <string name="explore">Explore</string>
+    <string name="profile">Profile</string>
+    <string name="some_people_you_might_know">Some People You Might Know</string>
+    <string name="qoutes">Jack of all trades is a master of none, but oftentimes better than a master of one.</string>
+    <string name="bio_title">Bio</string>
+    <string name="follow_info">%1$d Followers - %2$d Following</string>
+    <string name="dummy_user">xwyzworms</string>
+    <string name="dummy_url">https://avatars.githubusercontent.com/u/47450307?v=4</string>
+    <string name="dummy_github_url">https://github.com/Xwyzworms"</string>
+    <string name="fetching_data">Fetching Data ...</string>
+    <string name="repositories">Repositories</string>
+    <string name="defaultemailprovided">NoEmailProvided</string>
+    <string name="notifies_user_no_data">Notifies User No Data</string>
+    <string name="search_result">Search Result</string>
+    <string name="notifies_search_your_developers">Search your Developers</string>
+    <string name="notifies_image_view_only_for_desain">Image view only for desain</string>
+    <string name="notes_1">This App was Created By Data Scientist</string>
+    <string name="notes_2">Pratama Azmi Atmajaya</string>
+    <string name="notes_3">Xwyzworm</string>
+    <string name="githubimage">GithubImage</string>
+</resources>
