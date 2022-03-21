@@ -1,41 +1,33 @@
 package com.example.submission2_ezpz.viewmodels
 
-import android.util.Log
 import androidx.annotation.StringRes
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.submission2_ezpz.R
 import com.example.submission2_ezpz.data.UserOwner
-import com.example.submission2_ezpz.source_data.local.networks.ApiConfig
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.example.submission2_ezpz.source_data.local.entity.UserEntity
+import com.example.submission2_ezpz.source_data.local.setting_preference.SettingPreferences
+import com.example.submission2_ezpz.source_data.repository.UserRepository
+import com.example.submission2_ezpz.source_data.Result
+import kotlinx.coroutines.launch
 
-class DetailUserViewModel : ViewModel() {
+class DetailUserViewModel
+    ( private val mRepository: UserRepository,
+      private val mUserSetting: SettingPreferences)
+    : ViewModel() {
 
-    private var _user = MutableLiveData<UserOwner>()
-    private var _isLoading = MutableLiveData<Boolean>()
+    fun getUserInformation(username : String ) : LiveData<Result<UserOwner>>  {
+        return mRepository.getUserInfoRemote(username)
+    }
+    fun isUserFavorited(username : String) : LiveData<Result<UserEntity>>{
+        return mRepository.getUserInfoLocal(username)
+    }
 
-    val user : LiveData<UserOwner> = _user
-    val isLoading : LiveData<Boolean> = _isLoading
-
-     fun getUserInformation(username : String) {
-        _isLoading.value = true
-        val client = ApiConfig.ApiService().getDetailUser(username)
-        client.enqueue(object : Callback<UserOwner> {
-            override fun onResponse(call: Call<UserOwner>, response: Response<UserOwner>) {
-                _isLoading.value = false
-                if(response.isSuccessful && response.body() != null) {
-                    val user = response.body()
-                    _user.value = user as UserOwner
-                }
-            }
-            override fun onFailure(call: Call<UserOwner>, t: Throwable) {
-                _isLoading.value = false
-                Log.d(TAG, "On Failure : ${t.message}" )
-            }
-        })
+    fun setUserFavorite(user : UserEntity, state : Boolean) {
+        viewModelScope.launch {
+            mRepository.setFavorites(user,state)
+        }
     }
 
     companion object {

@@ -8,7 +8,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 @Entity(tableName = "users")
-class UserEntity(
+data class UserEntity(
 
     @field:ColumnInfo(name="username")
     @field:PrimaryKey

@@ -1,51 +1,78 @@
 package com.example.submission2_ezpz.ui
 
+import android.content.Context
+import com.example.submission2_ezpz.utils.GeneralUtils
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.submission2_ezpz.R
 import com.example.submission2_ezpz.adapters.DetailUserAdapter
 import com.example.submission2_ezpz.adapters.SectionPagerAdapter
-import com.example.submission2_ezpz.data.User
 import com.example.submission2_ezpz.databinding.FragmentFollowingBinding
+import com.example.submission2_ezpz.source_data.local.entity.UserEntity
+import com.example.submission2_ezpz.utils.ViewModelFactory
 import com.example.submission2_ezpz.viewmodels.DetailUserViewModel
 import com.example.submission2_ezpz.viewmodels.FollowingViewModel
 
+import com.example.submission2_ezpz.source_data.Result
 
+
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("settings")
 class FollowingFragment : Fragment() {
 
     private var _binding : FragmentFollowingBinding? = null
     private val binding : FragmentFollowingBinding get() = _binding!!
 
     private lateinit var itemListener :DetailUserAdapter.OnItemDuClicked
-    private var user : User? = null
-
+    private lateinit var user : UserEntity
     private lateinit var viewModelFollowingFragment : FollowingViewModel
+    private lateinit var factory : ViewModelFactory
+
+    //Variable Utility
+    private var tempUser : UserEntity? =null
+    private var isUserAvailable : Boolean = false
+    // ================================= VARIABLE SECTION ====================================
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        user = arguments?.getParcelable(SectionPagerAdapter.ARG_NAME)
-        settingUpViewModel()
-
-         itemListener = object : DetailUserAdapter.OnItemDuClicked{
-            override fun onItemClicked(user: User) {
-                goToDetails(user)
-            }
-
-            override fun onGithubClicked(github_url: String) {
-                val intent = Intent(Intent.ACTION_VIEW)
-                intent.data = Uri.parse(github_url)
-                requireActivity().startActivity(intent)
-            }
+        factory = ViewModelFactory.getInstance(requireContext(), context?.dataStore as DataStore<Preferences>)
+        viewModelFollowingFragment = ViewModelProvider(this, factory).get(FollowingViewModel::class.java)
+        tempUser = arguments?.getParcelable(SectionPagerAdapter.ARG_NAME)
+        if ( tempUser != null ) {
+            isUserAvailable = true
         }
+        if( isUserAvailable) {
+            user = tempUser as UserEntity
+            itemListener = object : DetailUserAdapter.OnItemDuClicked {
+                override fun onItemClicked(user: UserEntity) {
+                    goToDetails(user)
+                }
+                override fun onGithubClicked(github_url: String) {
+                    val intent = Intent(Intent.ACTION_VIEW)
+                    intent.data = Uri.parse(github_url)
+                    requireActivity().startActivity(intent)
+                }
+                override fun onFavoriteClicked(user: UserEntity) {
+                    if (user.isFavorite) viewModelFollowingFragment.setFavorite(user,false)
+                    else viewModelFollowingFragment.setFavorite(user,true)
+                }
+            }
+            settingUpViewModel()
+            val linearLayout = LinearLayoutManager(requireActivity())
+            binding.rvFollowing.layoutManager = linearLayout
+            binding.rvFollowing.setHasFixedSize(true)
+        }
+
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,29 +86,8 @@ class FollowingFragment : Fragment() {
         super.onDestroy()
         _binding = null
     }
-    private fun setUpTheRv(list_user : List<User>) {
-        val linearLayout = LinearLayoutManager(requireActivity())
-        val adapter = DetailUserAdapter(list_user)
-        adapter.setOnItemDuClickedListener(itemListener)
-        binding.rvFollowing.layoutManager = linearLayout
-        binding.rvFollowing.setHasFixedSize(true)
-        binding.rvFollowing.adapter = adapter
-    }
 
-    private fun showLoading(state : Boolean) {
-        if (state)
-        {
-            binding.pbFollowing.visibility = View.VISIBLE
-            binding.tvFollowingTextTitle.visibility = View.VISIBLE
-        }
-        else {
-            binding.pbFollowing.visibility = View.INVISIBLE
-            binding.tvFollowingTextTitle.visibility = View.INVISIBLE
-        }
-
-    }
-
-    private fun goToDetails(user : User) {
+    private fun goToDetails(user: UserEntity) {
         val mBundle = Bundle()
         mBundle.putParcelable(DetailUserViewModel.EXTRA_USER, user)
         val currentNavigationLocation = findNavController().currentDestination
@@ -95,17 +101,31 @@ class FollowingFragment : Fragment() {
 
         }
     }
+
     private fun settingUpViewModel() {
-        viewModelFollowingFragment = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())[FollowingViewModel::class.java]
-        if(user != null) {
-            viewModelFollowingFragment.getFollowing(user?.username)
-            viewModelFollowingFragment.userFollowing.observe(viewLifecycleOwner) {
-                setUpTheRv(it)
-            }
-            viewModelFollowingFragment.isLoading.observe(viewLifecycleOwner){
-                showLoading(it)
+
+        viewModelFollowingFragment.getFollowing(user.username).observe(viewLifecycleOwner) {result ->
+            if (result != null) {
+                when(result) {
+                    is Result.Loading -> {
+                        binding.pbFollowing.visibility = View.VISIBLE
+                        binding.tvFollowingTextTitle.visibility = View.VISIBLE
+                    }
+                    is Result.Success -> {
+                        binding.pbFollowing.visibility = View.INVISIBLE
+                        binding.tvFollowingTextTitle.visibility = View.INVISIBLE
+                        val adapter = DetailUserAdapter(result.data)
+                        adapter.setOnItemDuClickedListener(itemListener)
+                        adapter.disabledFavorite = true
+                        binding.rvFollowing.adapter = adapter
+                    }
+                    is Result.Error -> {
+                        GeneralUtils.printMessage(requireContext(), result.error)
+                    }
+                }
             }
         }
+
     }
 
 }

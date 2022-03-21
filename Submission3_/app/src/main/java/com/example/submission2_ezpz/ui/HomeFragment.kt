@@ -61,6 +61,7 @@ class HomeFragment : Fragment(), UserAdapter.ItemClickCallback {
                         binding.progressBarH.visibility = View.INVISIBLE
                         userAdapter = UserAdapter(result.data)
                         userAdapter?.setOnItemListener(this)
+                        binding.rvHUsers.setHasFixedSize(true)
                         binding.rvHUsers.adapter = userAdapter
                     }
                 }

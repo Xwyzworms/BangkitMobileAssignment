@@ -17,23 +17,7 @@ class UserProfileViewModel : ViewModel() {
     val isLoading : LiveData<Boolean> = _isLoading
     val userData : LiveData<UserOwner> = _userData
 
-    fun getUserData(username : String) {
-        _isLoading.value = true
-        val client = ApiConfig.ApiService().getDetailUser(username)
-        client.enqueue(object : Callback<UserOwner> {
-            override fun onResponse(call: Call<UserOwner>, response: Response<UserOwner>) {
-                _isLoading.value = false
-                if(response.isSuccessful && response.body() != null) {
-                    _userData.value = response.body()
-                }
-            }
-
-            override fun onFailure(call: Call<UserOwner>, t: Throwable) {
-                _isLoading.value = false
-                Log.d(TAG, "on Failure : ${t.message}")
-            }
-        })
-    }
+    fun getUserData(username : String) {    }
     companion object {
         private const val TAG = "FollowingViewModel"
     }

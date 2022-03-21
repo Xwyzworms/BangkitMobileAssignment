@@ -13,6 +13,7 @@ import com.example.submission2_ezpz.adapters.SectionPagerAdapter
 import com.example.submission2_ezpz.data.User
 import com.example.submission2_ezpz.data.UserOwner
 import com.example.submission2_ezpz.databinding.FragmentUserProfileBinding
+import com.example.submission2_ezpz.source_data.local.entity.UserEntity
 import com.example.submission2_ezpz.viewmodels.UserProfileViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 class UserProfileFragment : Fragment() {
@@ -21,7 +22,7 @@ class UserProfileFragment : Fragment() {
     private val binding : FragmentUserProfileBinding get() = _binding!!
 
 
-    private lateinit var user : User
+    private lateinit var user : UserEntity
     private lateinit var viewModelUserProfile : UserProfileViewModel
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,10 +33,11 @@ class UserProfileFragment : Fragment() {
     }
 
     private fun settingUpTabAdapter() {
-        user = User(
+        user = UserEntity(
             resources.getString(R.string.dummy_user),
             resources.getString(R.string.dummy_url),
-            resources.getString(R.string.dummy_github_url)
+            resources.getString(R.string.dummy_github_url),
+            false
         )
         val sectionPagerAdapter = SectionPagerAdapter(this,user)
         settingUpViewHolder()

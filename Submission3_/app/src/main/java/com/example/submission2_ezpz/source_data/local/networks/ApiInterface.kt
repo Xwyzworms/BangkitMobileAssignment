@@ -24,17 +24,19 @@ interface ApiInterface {
 
  @GET("/users/{username}")
  @Headers("Authorization: token $TOKEN")
- fun getDetailUser(@Path("username") username : String ) : Call<UserOwner>
+ suspend fun getDetailUser(@Path("username") username : String ) : UserOwner
 
  @GET("/users/{username}/following")
  @Headers("Authorization: token $TOKEN")
- fun getFollowing(@Path("username") username : String) : Call<List<User>>
+ suspend fun getFollowing(@Path("username") username : String) : List<User>
 
  @GET("/users/{username}/followers")
  @Headers("Authorization: token $TOKEN")
- fun getFollowers(@Path("username") username: String) : Call<List<User>>
+ suspend fun getFollowers(@Path("username") username: String) : List<User>
 
-
+ @GET("/search/users")
+ @Headers("Authorization: token $TOKEN")
+ suspend fun getUsersCoroutines(@Query("q") query: String) : SearchResult
 
 
 

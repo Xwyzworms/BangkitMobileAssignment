@@ -24,10 +24,6 @@ class UserAdapter(private val listUserOwners : List<UserEntity>) : RecyclerView.
         holder.binding.tvHName.text = user.username
         if(user.isFavorite) holder.binding.ivFavorite.setImageDrawable(ContextCompat.getDrawable(isFavorView.context, R.drawable.ic_baseline_star_24))
         else holder.binding.ivFavorite.setImageDrawable(ContextCompat.getDrawable(isFavorView.context, R.drawable.ic_baseline_star_border_24))
-        isFavorView.setOnClickListener {
-            Log.d("HELLO",user.isFavorite.toString())
-            itemClickCallbackVariable?.onFavoriteClick(user)
-        }
         Glide.with(holder.itemView.context).load(user.avatarUrl).into(holder.binding.ivHPicture)
     }
     inner class ViewHolder( val binding : ItemRvHomeBinding) : RecyclerView.ViewHolder(binding.root){
@@ -47,6 +43,9 @@ class UserAdapter(private val listUserOwners : List<UserEntity>) : RecyclerView.
         }
         holder.binding.ivHRepo.setOnClickListener {
             itemClickCallbackVariable?.onGithubIconClick(uri = user.githubUrl.toString())
+        }
+        holder.binding.ivFavorite.setOnClickListener {
+            itemClickCallbackVariable?.onFavoriteClick(user)
         }
 
 

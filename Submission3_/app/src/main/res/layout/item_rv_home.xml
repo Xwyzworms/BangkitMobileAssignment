@@ -37,6 +37,16 @@
         app:layout_constraintStart_toEndOf="@id/iv_h_picture"
         app:layout_constraintTop_toBottomOf="@+id/tv_h_name" />
 
+    <ImageView
+        android:id="@+id/iv_favorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_star_border_24"
+        android:layout_marginStart="10dp"
+        app:layout_constraintStart_toEndOf="@id/iv_h_repo"
+        app:layout_constraintTop_toBottomOf="@id/tv_h_name"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
 
 
 

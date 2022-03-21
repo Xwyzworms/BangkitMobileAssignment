@@ -4,11 +4,12 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.submission2_ezpz.data.User
+import com.example.submission2_ezpz.source_data.local.entity.UserEntity
 import com.example.submission2_ezpz.ui.FollowersFragment
 import com.example.submission2_ezpz.ui.FollowingFragment
 
-class SectionPagerAdapter(fragment : Fragment,dataUserParams : User) : FragmentStateAdapter(fragment){
-    private var dataUser : User = dataUserParams
+class SectionPagerAdapter(fragment : Fragment,dataUserParams : UserEntity) : FragmentStateAdapter(fragment){
+    private var dataUser : UserEntity = dataUserParams
     override fun getItemCount(): Int {
         return totalPage
     }
