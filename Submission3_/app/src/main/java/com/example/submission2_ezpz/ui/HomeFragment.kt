@@ -9,17 +9,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.submission2_ezpz.R
 import com.example.submission2_ezpz.adapters.UserAdapter
 import com.example.submission2_ezpz.databinding.FragmentHomeBinding
 import com.example.submission2_ezpz.source_data.Result
 import com.example.submission2_ezpz.source_data.local.entity.UserEntity
+import com.example.submission2_ezpz.utils.GeneralUtils
 import com.example.submission2_ezpz.utils.ViewModelFactory
 import com.example.submission2_ezpz.viewmodels.DetailUserViewModel
 import com.example.submission2_ezpz.viewmodels.HomeViewModel
@@ -37,9 +41,19 @@ class HomeFragment : Fragment(), UserAdapter.ItemClickCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         factory = ViewModelFactory.getInstance(requireActivity(), context?.dataStore as DataStore<Preferences>)
         homeFragmentViewModel = ViewModelProvider(this,factory)[HomeViewModel::class.java]
 
+        homeFragmentViewModel.getCurrentTheme().observe(viewLifecycleOwner) {
+            if (it) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            }
+            else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+
+        }
         val linearLayout = LinearLayoutManager(requireActivity())
         binding.rvHUsers.layoutManager = linearLayout
 
@@ -76,6 +90,29 @@ class HomeFragment : Fragment(), UserAdapter.ItemClickCallback {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                try {
+                    val currentNavigationLocation = findNavController().currentDestination
+
+                    when (currentNavigationLocation) {
+
+                        findNavController()
+                            .findDestination(R.id.detailUserFragment) -> findNavController()
+                            .navigate(R.id.action_detailUserFragment_to_homeFragment)
+
+                        findNavController().findDestination(R.id.detailUserFragment2) ->
+                            findNavController().navigate(R.id.action_detailUserFragment2_to_homeFragment)
+
+                        findNavController().findDestination(R.id.favoriteFragment) -> findNavController().navigate(R.id.action_favoriteFragment_to_homeFragment)
+                    }
+                }
+                catch (e: IllegalStateException )  {
+                    view?.findNavController()?.navigate(R.id.homeFragment)
+                }
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(callback)
         return binding.root
 
     }
@@ -112,9 +149,7 @@ class HomeFragment : Fragment(), UserAdapter.ItemClickCallback {
     }
 
     override fun onGithubIconClick(uri : String ) {
-        val intent = Intent(Intent.ACTION_VIEW)
-        intent.data = Uri.parse(uri)
-        requireActivity().startActivity(intent)
+        GeneralUtils.onGithubClick(requireActivity(), uri)
     }
 
 }

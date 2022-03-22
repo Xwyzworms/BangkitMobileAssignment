@@ -114,10 +114,16 @@ class FollowingFragment : Fragment() {
                     is Result.Success -> {
                         binding.pbFollowing.visibility = View.INVISIBLE
                         binding.tvFollowingTextTitle.visibility = View.INVISIBLE
-                        val adapter = DetailUserAdapter(result.data)
-                        adapter.setOnItemDuClickedListener(itemListener)
-                        adapter.disabledFavorite = true
-                        binding.rvFollowing.adapter = adapter
+
+                        if(result.data.isEmpty()) {
+                            binding.tvNotes.visibility = View.VISIBLE
+                        }
+                        else {
+                            val adapter = DetailUserAdapter(result.data)
+                            adapter.setOnItemDuClickedListener(itemListener)
+                            adapter.disabledFavorite = true
+                            binding.rvFollowing.adapter = adapter
+                        }
                     }
                     is Result.Error -> {
                         GeneralUtils.printMessage(requireContext(), result.error)

@@ -3,6 +3,7 @@ package com.example.submission2_ezpz.viewmodels
 import androidx.annotation.StringRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.submission2_ezpz.R
 import com.example.submission2_ezpz.data.UserOwner
@@ -20,9 +21,7 @@ class DetailUserViewModel
     fun getUserInformation(username : String ) : LiveData<Result<UserOwner>>  {
         return mRepository.getUserInfoRemote(username)
     }
-    fun isUserFavorited(username : String) : LiveData<Result<UserEntity>>{
-        return mRepository.getUserInfoLocal(username)
-    }
+
 
     fun setUserFavorite(user : UserEntity, state : Boolean) {
         viewModelScope.launch {

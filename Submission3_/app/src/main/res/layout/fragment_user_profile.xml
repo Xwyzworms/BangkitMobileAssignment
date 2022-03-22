@@ -16,6 +16,27 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@tools:sample/avatars" />
 
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/sm_all"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_detail"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:src="@drawable/ic_baseline_favorite_24"
+        app:fabCustomSize="70dp"
+        app:backgroundTint="@color/white_400"
+        android:layout_marginBottom="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="@string/floating_button_for_favorite" />
+
     <TextView
         android:id="@+id/tv_nameUser"
         style="@style/TextWidthParent"

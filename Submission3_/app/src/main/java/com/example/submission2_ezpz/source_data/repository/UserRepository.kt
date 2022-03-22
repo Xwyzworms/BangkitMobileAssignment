@@ -1,9 +1,6 @@
 package com.example.submission2_ezpz.source_data.repository
 
-import android.util.Log
 import androidx.lifecycle.*
-import com.example.submission2_ezpz.data.SearchResult
-import com.example.submission2_ezpz.data.User
 import com.example.submission2_ezpz.data.UserOwner
 import com.example.submission2_ezpz.source_data.Result
 import com.example.submission2_ezpz.source_data.local.entity.UserEntity
@@ -12,28 +9,10 @@ import com.example.submission2_ezpz.source_data.local.networks.ApiInterface
 import com.example.submission2_ezpz.source_data.local.room.UserDao
 import com.example.submission2_ezpz.source_data.local.setting_preference.SettingPreferences
 import kotlinx.coroutines.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class UserRepository private constructor (
-    private val apiService : ApiInterface,
-    private val userDao: UserDao,
-    private val userPreferences: SettingPreferences) {
+    private val userDao: UserDao) {
 
-
-    fun getLocalData(): LiveData<Result<List<UserEntity>>> = liveData {
-        try {
-
-            Log.d(TAG, "localData")
-            emit(Result.Loading)
-            prepareRemoteUsersData()
-        } catch (e: Exception) {
-            Log.d(TAG, "prepareRemoteUsersData: ${e.message}")
-            emit(Result.Error(e.message.toString()))
-        }
-        emitSource(userDao.getUsers().map { Result.Success(it) })
-    }
 
     fun getUserInfoRemote(username : String) : LiveData<Result<UserOwner>> = liveData {
         try {
@@ -92,7 +71,6 @@ class UserRepository private constructor (
         emitSource(dataReturned)
     }
 
-
     suspend fun removeUser(user: UserEntity) {
         userDao.delete(user)
     }
@@ -136,31 +114,25 @@ class UserRepository private constructor (
             emit(Result.Error(e.message.toString()))
         }
     }
-    private fun prepareRemoteUsersData() {
-        val client = ApiConfig.ApiService().getUsers()
-        client.enqueue(object : Callback<List<User>> {
-            override fun onResponse(call: Call<List<User>>, response: Response<List<User>>) {
-                val responseContent = response.body()
-                if (responseContent != null) {
-                    CoroutineScope(Dispatchers.IO).launch {
-                        val userEntityList = responseContent.map {
-                            val isFavorited = userDao.isUserFavorites(it.username)
-                            UserEntity(it.username, it.avatarUrl, it.githubUrl,isFavorited)
-                        }
-                        userDao.deleteAllNoFavorites()
-                        userDao.insertFavorites(userEntityList)
-                        }
-                    }
+    fun prepareRemoteUsersData() : LiveData<Result<List<UserEntity>>> = liveData{
+       try{
+           emit(Result.Loading)
+           val response = ApiConfig.ApiService().getUsers()
+           val returnedData : List<UserEntity> = response.map{
+               val isFavorite = userDao.isUserFavorites(it.username)
+               UserEntity(it.username, it.avatarUrl, it.githubUrl, isFavorite)
 
-                }
-            override fun onFailure(call: Call<List<User>>, t: Throwable) {
-                Log.d(TAG, "OnFailure ${t.message}")
-            }
-        })
-    }
-
-    fun getCurrentTheme() : LiveData<Boolean>{
-        return userPreferences.getThemeSettings().asLiveData()
+           }
+           userDao.deleteAllNoFavorites()
+           userDao.insertFavorites(returnedData)
+           val local : LiveData<List<UserEntity>> = userDao.getUsers()
+           withContext(Dispatchers.Main) {
+               emitSource(local.map{Result.Success(it)})
+           }
+       }
+       catch(e : Exception) {
+           emit(Result.Error(e.message.toString()))
+       }
     }
 
     fun getFavorites() : LiveData<Result<List<UserEntity>>> {
@@ -188,12 +160,11 @@ class UserRepository private constructor (
         private var INSTANCE : UserRepository? = null
 
         fun getInstance(
-             apiService: ApiInterface,
              userDao : UserDao
-            ,userPreferences : SettingPreferences ) : UserRepository
+         ) : UserRepository
         {
             return INSTANCE ?: synchronized(this){
-                val instance = UserRepository(apiService,userDao,userPreferences)
+                val instance = UserRepository(userDao)
                 INSTANCE = instance
                 instance
             }

@@ -16,23 +16,33 @@ class ViewModelFactory(private val mRepository: UserRepository, private val mUse
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         when {
+            @Suppress("UNCHECKED_CAST")
             modelClass.isAssignableFrom(UserFavoriteViewModel::class.java) -> {
                 return UserFavoriteViewModel(mRepository, mUserSettings) as T
             }
+            @Suppress("UNCHECKED_CAST")
             modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
                 return HomeViewModel(mRepository, mUserSettings) as T
             }
+            @Suppress("UNCHECKED_CAST")
             modelClass.isAssignableFrom(ExploreViewModel::class.java) -> {
                 return ExploreViewModel(mRepository,mUserSettings) as T
             }
+            @Suppress("UNCHECKED_CAST")
             modelClass.isAssignableFrom(FollowersViewModel::class.java) -> {
                 return FollowersViewModel(mRepository, mUserSettings) as T
             }
+            @Suppress("UNCHECKED_CAST")
             modelClass.isAssignableFrom(FollowingViewModel::class.java) -> {
                 return FollowingViewModel(mRepository, mUserSettings) as T
             }
+            @Suppress("UNCHECKED_CAST")
             modelClass.isAssignableFrom(DetailUserViewModel::class.java) -> {
                 return DetailUserViewModel(mRepository, mUserSettings) as T
+            }
+            @Suppress("UNCHECKED_CAST")
+            modelClass.isAssignableFrom(UserProfileViewModel::class.java) -> {
+                return UserProfileViewModel(mRepository, mUserSettings) as T
             }
         }
         throw IllegalArgumentException("Incorrect ViewModel Class ${modelClass.simpleName}")
@@ -46,7 +56,7 @@ class ViewModelFactory(private val mRepository: UserRepository, private val mUse
         @JvmStatic
         fun getInstance(context : Context, mUserSettings : DataStore<Preferences>) : ViewModelFactory{
             return INSTANCE ?: synchronized(this) {
-                val instance = ViewModelFactory(Injection.ProvideRepository(context, mUserSettings),Injection.ProvideUserSettings(mUserSettings))
+                val instance = ViewModelFactory(Injection.ProvideRepository(context),Injection.ProvideUserSettings(mUserSettings))
                 INSTANCE = instance
                 instance
             }

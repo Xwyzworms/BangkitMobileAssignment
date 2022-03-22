@@ -16,11 +16,7 @@ interface ApiInterface {
 
  @GET("/users")
  @Headers("Authorization: token $TOKEN")
- fun getUsers() : Call<List<User>>
-
- @GET("/search/users")
- @Headers("Authorization: token $TOKEN")
- fun searchUser(@Query("q") query : String) : Call<SearchResult>
+ suspend fun getUsers() : List<User>
 
  @GET("/users/{username}")
  @Headers("Authorization: token $TOKEN")

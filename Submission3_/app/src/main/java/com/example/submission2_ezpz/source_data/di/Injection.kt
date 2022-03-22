@@ -10,11 +10,10 @@ import com.example.submission2_ezpz.source_data.local.room.UserDatabase
 import com.example.submission2_ezpz.source_data.local.setting_preference.SettingPreferences
 
 object Injection {
-    fun ProvideRepository(context : Context,  dataStore : DataStore<Preferences>) : UserRepository {
-        val apiService : ApiInterface = ApiConfig.ApiService()
+    fun ProvideRepository(context : Context) : UserRepository {
         val database  = UserDatabase.getDatabaseInstance(context)
         val dao = database.userDao()
-        return UserRepository.getInstance(apiService,dao ,ProvideUserSettings(dataStore))
+        return UserRepository.getInstance(dao)
     }
 
     fun ProvideUserSettings(datastore : DataStore<Preferences>) : SettingPreferences{
