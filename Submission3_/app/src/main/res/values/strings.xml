@@ -27,4 +27,7 @@
     <string name="notes_2">Pratama Azmi Atmajaya</string>
     <string name="notes_3">Xwyzworm</string>
     <string name="githubimage">GithubImage</string>
+    <string name="floating_button_for_favorite">Floating Button For Favorite</string>
+    <string name="tidak_ada_data">Tidak Ada data ...</string>
+    <string name="list_favorite">List Favorite</string>
 </resources>

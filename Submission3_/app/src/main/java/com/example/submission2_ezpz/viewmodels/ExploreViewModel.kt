@@ -31,6 +31,7 @@ class ExploreViewModel(
             }
         }
     }
+
     fun deleteUser(user:UserEntity) {
         viewModelScope.launch {
             userRepository.removeUser(user)

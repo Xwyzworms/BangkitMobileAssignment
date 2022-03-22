@@ -13,7 +13,7 @@ interface UserDao {
     @Query("SELECT * FROM users WHERE favorite = 1")
     fun getFavorites() : LiveData<List<UserEntity>>
 
-    @Query("SELECT * FROM users ORDER BY username ASC")
+    @Query("SELECT * FROM users ORDER BY RANDOM() ")
     fun getUsers() : LiveData<List<UserEntity>>
 
     @Query("SELECT EXISTS( SELECT * FROM users WHERE username=:username)")

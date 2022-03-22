@@ -1,21 +1,33 @@
 package com.example.submission2_ezpz.ui
+import com.example.submission2_ezpz.source_data.Result
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CompoundButton
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.submission2_ezpz.R
 import com.example.submission2_ezpz.adapters.SectionPagerAdapter
-import com.example.submission2_ezpz.data.User
 import com.example.submission2_ezpz.data.UserOwner
 import com.example.submission2_ezpz.databinding.FragmentUserProfileBinding
 import com.example.submission2_ezpz.source_data.local.entity.UserEntity
+import com.example.submission2_ezpz.source_data.local.setting_preference.SettingPreferences
+import com.example.submission2_ezpz.utils.GeneralUtils
+import com.example.submission2_ezpz.utils.ViewModelFactory
 import com.example.submission2_ezpz.viewmodels.UserProfileViewModel
 import com.google.android.material.tabs.TabLayoutMediator
+
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("settings")
 class UserProfileFragment : Fragment() {
 
     private var _binding : FragmentUserProfileBinding? =null
@@ -24,6 +36,8 @@ class UserProfileFragment : Fragment() {
 
     private lateinit var user : UserEntity
     private lateinit var viewModelUserProfile : UserProfileViewModel
+    private lateinit var themePreferences : SettingPreferences
+    private lateinit var factory : ViewModelFactory
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -49,23 +63,31 @@ class UserProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //initiate Dummy User ( Using my github profile )
-        checkIfFragmentAttached {
-                viewModelUserProfile = ViewModelProvider(
-                    this,
-                    ViewModelProvider.NewInstanceFactory()
-                )[UserProfileViewModel::class.java]
-
-                settingUpTabAdapter()
+        factory = ViewModelFactory.getInstance(requireContext(),context?.dataStore as DataStore<Preferences> )
+        viewModelUserProfile = ViewModelProvider(this,factory)[UserProfileViewModel::class.java]
+        settingUpTabAdapter()
+        themePreferences = SettingPreferences.getInstance(requireContext().dataStore)
+        viewModelUserProfile.getThemeSettings().observe(viewLifecycleOwner) {
+            if (it) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                binding.smAll.isChecked = true
             }
-    }
+            else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                binding.smAll.isChecked = false
+            }
+        }
 
-    private fun checkIfFragmentAttached(operation: Fragment.() -> Unit) {
-        if (isAdded && context != null) {
-            operation(this)
+        binding.smAll.setOnCheckedChangeListener { _ : CompoundButton, isChecked : Boolean ->
+            viewModelUserProfile.saveThemeSettings(isChecked)
+        }
+        binding.fabDetail.setOnClickListener {
+            findNavController().navigate(R.id.action_detailUserFragment_to_favoriteFragment)
         }
     }
+
     private fun settingUpUi(user : UserOwner){
+
         binding.tvNameUser.text = user.name
         binding.tvLocation.text = user.location
         binding.tvUpContentRepo.text = user.publicRepos.toString()
@@ -82,32 +104,29 @@ class UserProfileFragment : Fragment() {
         binding.tvUpContentFollowers.text = user.followers.toString()
         binding.tvUpContentFollowing.text = user.following.toString()
         Glide.with(requireActivity()).load(user.avatarUrl).into(binding.ivDetailUser)
-
-
     }
 
-    private fun showLoading(state : Boolean) {
-        if (state)
-        {
-            binding.pbUp.visibility = View.VISIBLE
-            binding.tvPbState.visibility = View.VISIBLE
-        }
-        else {
-            binding.pbUp.visibility = View.INVISIBLE
-            binding.tvPbState.visibility = View.INVISIBLE
-        }
-
-    }
     private fun settingUpViewHolder() {
-        viewModelUserProfile.getUserData(user.username)
-        viewModelUserProfile.userData.observe(viewLifecycleOwner){
-            settingUpUi(it)
+        viewModelUserProfile.getUserData(user.username).observe(viewLifecycleOwner){ result ->
+            if (result != null) {
+                when(result) {
+                    is Result.Loading -> {
+                        binding.pbUp.visibility = View.VISIBLE
+                        binding.tvPbState.visibility = View.VISIBLE
+                    }
+                    is Result.Success -> {
+                        binding.pbUp.visibility = View.INVISIBLE
+                        binding.tvPbState.visibility = View.INVISIBLE
+                        settingUpUi(result.data)
+
+                    }
+                    is Result.Error -> {
+                        GeneralUtils.printMessage(requireContext(), result.error)
+                    }
+                }
+            }
         }
 
-
-        viewModelUserProfile.isLoading.observe(viewLifecycleOwner){
-            showLoading(it)
-        }
 
     }
     companion object {

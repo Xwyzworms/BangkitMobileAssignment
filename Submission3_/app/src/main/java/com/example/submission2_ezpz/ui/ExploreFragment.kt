@@ -70,7 +70,6 @@ class ExploreFragment : Fragment() {
         }
         return listener
     }
-
     private  fun searchUsers(query: String) {
 
         observer.removeObservers(viewLifecycleOwner)
@@ -80,12 +79,28 @@ class ExploreFragment : Fragment() {
                 when(it) {
                     is Result.Loading -> {
                         binding.pbFe.visibility = View.VISIBLE
+                        binding.ivFeContent.visibility = View.INVISIBLE
+                        binding.tvSearchDevTitle.visibility = View.INVISIBLE
                     }
                     is Result.Success -> {
-                        binding.pbFe.visibility = View.INVISIBLE
-                        detailUserAdapter = DetailUserAdapter(it.data)
-                        detailUserAdapter.setOnItemDuClickedListener(setupOnclickListener())
-                        binding.rvResult.adapter = detailUserAdapter
+
+                        if (it.data.isEmpty()) {
+
+                            binding.ivNotFound.visibility = View.VISIBLE
+                            binding.pbFe.visibility = View.INVISIBLE
+                            binding.rvResult.visibility = View.INVISIBLE
+                            binding.rvResult.adapter = null
+
+                        }
+                        else {
+                            binding.ivNotFound.visibility = View.INVISIBLE
+                            binding.pbFe.visibility = View.INVISIBLE
+                            binding.ivFeContent.visibility = View.INVISIBLE
+                            detailUserAdapter = DetailUserAdapter(it.data)
+                            detailUserAdapter.setOnItemDuClickedListener(setupOnclickListener())
+                            binding.rvResult.adapter = detailUserAdapter
+                        }
+
                     }
                     is Result.Error -> {
                         binding.pbFe.visibility = View.GONE

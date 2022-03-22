@@ -33,10 +33,10 @@ class UserFavoriteViewModel(private val userRepository : UserRepository,
         return userRepository.getFavorites()
     }
 
+
     fun removeFavorite(user : UserEntity) {
         viewModelScope.launch {
-            userRepository.setFavorites(user, false)
-            status_message_.value = "User Removed ..."
+            userRepository.removeUser(user)
         }
     }
 

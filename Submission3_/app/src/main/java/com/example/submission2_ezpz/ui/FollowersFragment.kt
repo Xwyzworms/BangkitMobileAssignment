@@ -94,7 +94,12 @@ class FollowersFragment : Fragment(), DetailUserAdapter.OnItemDuClicked {
                         binding.pbFollowers.visibility = View.INVISIBLE
                         binding.tvFollowersTextTitle.visibility = View.INVISIBLE
                         binding.rvFollowers.visibility = View.VISIBLE
-                        settingUpRv(result.data)
+                        if(result.data.isEmpty()) {
+                            binding.tvNotes.visibility = View.VISIBLE
+                        }
+                        else {
+                            settingUpRv(result.data)
+                        }
                     }
                     is Result.Error -> {
                         GeneralUtils.printMessage(requireContext(), result.error)
